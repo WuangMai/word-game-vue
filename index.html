@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Word Game</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script type="module" src="app.js" defer></script>
+  </head>
+
+  <body>
+    <header class="hero hero-body title is-primary">
+      <h1>Vue Słowogra dla WSZ "Edukacja"</h1>
+    </header>
+
+    <div id="app" class="container is-link notification">
+      <h1 class="is-size-3">Zgadnij {{ currentWord.length }}-literowe słowo</h1>
+      <h3 style="margin-bottom: 40px" class="is-size-4">
+        Wybierz z liter poniżej
+      </h3>
+
+      <!-- A progress indicator -->
+      <div>
+        <div class="is-size-5">{{ progressPercent }}%</div>
+      </div>
+      <!-- The number of times the player has guessed -->
+      <div class="is-size-5 pb-2">{{ tries }} prób</div>
+
+      <!-- Displaying the guessed letters -->
+      <div>
+        <input
+          readonly
+          class="word-display"
+          v-for="(l, i) in currentWord.split('')"
+          :key="i"
+          :value="getGuessedLetter(i)"
+        />
+      </div>
+
+      <!-- The alphabet buttons -->
+      <div class="buttons">
+        <button
+          :class="getLetterButtonClass(l)"
+          :disabled="isDisabled(l)"
+          v-for="l in alphabets"
+          :key="l"
+          :title="currentGuess.includes(l) ? `${l} już wybrany` : `Wybierz ${l}`"
+          @click="makeGuess(l)"
+        >
+          {{ l }}
+        </button>
+      </div>
+      <div>{{ message }}</div>
+      <div><button id="new_game" class="button is-primary is-rounded" @click="loadGame">Nowa Gra</button></div>
+    </div>
+  </body>
+  <style>
+    .word-display {
+      font-family: "Oxyden Mono", monospace;
+      color: #ec826f;
+      display: inline-block;
+      width: 2vw;
+      height: 2vw;
+      text-align: center;
+      border: 0;
+      border-bottom: 2px solid #8aa1a0;
+      margin: 0px 0.3vmax;
+      padding: 0px;
+      font-size: 28px;
+      outline: none;
+      background-color: transparent;
+    }
+  </style>
+</html>
